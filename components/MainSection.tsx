@@ -18,68 +18,24 @@ interface MainSectionProps {
   completeTodo: Function
   deleteTodo: Function
 }
-
 interface MainSectionState {
   filter: string;
 }
 
 class MainSection extends React.Component<MainSectionProps, MainSectionState> {
-  constructor(props, context) {
+  constructor(props?: MainSectionProps, context?: any) {
     super(props, context)
     this.state = { filter: SHOW_ALL }
   }
 
-  handleClearCompleted() {
-    const atLeastOneCompleted = this.props.todos.some(todo => todo.completed)
-    if (atLeastOneCompleted) {
-      this.props.clearCompleted()
-    }
-  }
-
-  handleShow(filter) {
-    this.setState({ filter })
-  }
-
-  renderToggleAll(completedCount) {
-    const { todos, completeAll } = this.props
-    if (todos.length > 0) {
-      return (
-        <input
-          className='toggle-all'
-          type='checkbox'
-          checked={completedCount === todos.length}
-          onChange={() => completeAll()} />
-      )
-    }
-  }
-
-  renderFooter(completedCount) {
-    const { todos } = this.props
-    const { filter } = this.state
-    const activeCount = todos.length - completedCount
-
-    if (todos.length) {
-      return (
-        <Footer
-          completedCount={completedCount}
-          activeCount={activeCount}
-          filter={filter}
-          onClearCompleted={this.handleClearCompleted.bind(this)}
-          onShow={this.handleShow.bind(this)} />
-      )
-    }
-  }
-
-  render() {
+  render(): JSX.Element {
    const { todos, completeTodo, deleteTodo, editTodo } = this.props
     const { filter } = this.state
-
     const filteredTodos = todos.filter(TODO_FILTERS[filter])
     const completedCount = todos.reduce((count, todo) =>
       todo.completed ? count + 1 : count,
       0
     )
-
     return (
       <section className='main'>
         {this.renderToggleAll(completedCount)}
@@ -96,6 +52,46 @@ class MainSection extends React.Component<MainSectionProps, MainSectionState> {
         {this.renderFooter(completedCount)}
       </section>
     )
+  }
+
+  private handleClearCompleted() {
+    const atLeastOneCompleted = this.props.todos.some(todo => todo.completed)
+    if (atLeastOneCompleted) {
+      this.props.clearCompleted()
+    }
+  }
+
+  private handleShow(filter: string) {
+    this.setState({ filter })
+  }
+
+  private renderToggleAll(completedCount: number): JSX.Element {
+    const { todos, completeAll } = this.props
+    if (todos.length > 0) {
+      return (
+        <input
+          className='toggle-all'
+          type='checkbox'
+          checked={completedCount === todos.length}
+          onChange={() => completeAll()} />
+      )
+    }
+  }
+
+  private renderFooter(completedCount: number): JSX.Element {
+    const { todos } = this.props
+    const { filter } = this.state
+    const activeCount = todos.length - completedCount
+    if (todos.length) {
+      return (
+        <Footer
+          completedCount={completedCount}
+          activeCount={activeCount}
+          filter={filter}
+          onClearCompleted={this.handleClearCompleted.bind(this)}
+          onShow={this.handleShow.bind(this)} />
+      )
+    }
   }
 }
 

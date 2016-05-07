@@ -10,36 +10,19 @@ interface TodoItemProps {
   completeTodo: Function
   key?: any
 }
-
 interface TodoItemState {
   editing: boolean
 }
 
 class TodoItem extends React.Component<TodoItemProps, TodoItemState> {
-  constructor(props, context) {
+  constructor(props?: TodoItemProps, context?: any) {
     super(props, context)
-    this.state = {
-      editing: false
-    }
+    this.state = { editing: false }
   }
 
-  handleDoubleClick() {
-    this.setState({ editing: true })
-  }
-
-  handleSave(id, text) {
-    if (text.length === 0) {
-      this.props.deleteTodo(id)
-    } else {
-      this.props.editTodo(id, text)
-    }
-    this.setState({ editing: false })
-  }
-
-  render() {
+  render(): JSX.Element {
     const { todo, completeTodo, deleteTodo } = this.props
-
-    let element
+    let element: JSX.Element
     if (this.state.editing) {
       element = (
         <TodoTextInput
@@ -49,22 +32,21 @@ class TodoItem extends React.Component<TodoItemProps, TodoItemState> {
       )
     } else {
       element = (
-        <div className="view">
+        <div className='view'>
           <input
-            className="toggle"
-            type="checkbox"
+            className='toggle'
+            type='checkbox'
             checked={todo.completed}
             onChange={() => completeTodo(todo.id)} />
           <label onDoubleClick={this.handleDoubleClick.bind(this)}>
             {todo.text}
           </label>
           <button
-            className="destroy"
+            className='destroy'
             onClick={() => deleteTodo(todo.id)} />
         </div>
       )
     }
-
     return (
       <li className={classnames({
         completed: todo.completed,
@@ -73,6 +55,19 @@ class TodoItem extends React.Component<TodoItemProps, TodoItemState> {
         {element}
       </li>
     )
+  }
+
+  private handleDoubleClick() {
+    this.setState({ editing: true })
+  }
+
+  private handleSave(id: number, text: string) {
+    if (text.length === 0) {
+      this.props.deleteTodo(id)
+    } else {
+      this.props.editTodo(id, text)
+    }
+    this.setState({ editing: false })
   }
 }
 

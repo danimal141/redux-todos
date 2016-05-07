@@ -6,13 +6,7 @@ interface HeaderProps {
 }
 
 class Header extends React.Component<HeaderProps, void> {
-  handleSave(text) {
-    if (text.length !== 0) {
-      this.props.addTodo(text)
-    }
-  }
-
-  render() {
+  render(): JSX.Element {
     return (
       <header className='header'>
           <h1>todos</h1>
@@ -22,6 +16,12 @@ class Header extends React.Component<HeaderProps, void> {
             placeholder='What needs to be done?' />
       </header>
     )
+  }
+
+  private handleSave(text: string) {
+    if (text.length !== 0) {
+      this.props.addTodo(text)
+    }
   }
 }
 

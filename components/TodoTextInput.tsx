@@ -14,34 +14,14 @@ interface TodoTextInputState {
 }
 
 class TodoTextInput extends React.Component<TodoTextInputProps, TodoTextInputState> {
-  constructor(props, context) {
+  constructor(props?: TodoTextInputProps, context?: any) {
     super(props, context)
     this.state = {
       text: this.props.text || ''
     }
   }
 
-  handleSubmit(e) {
-    const text = e.target.value.trim()
-    if (e.which === 13) {
-      this.props.onSave(text)
-      if (this.props.newTodo) {
-        this.setState({ text: '' })
-      }
-    }
-  }
-
-  handleChange(e) {
-    this.setState({ text: e.target.value })
-  }
-
-  handleBlur(e) {
-    if (!this.props.newTodo) {
-      this.props.onSave(e.target.value)
-    }
-  }
-
-  render() {
+  render(): JSX.Element {
     return (
       <input className={
         classnames({
@@ -56,6 +36,26 @@ class TodoTextInput extends React.Component<TodoTextInputProps, TodoTextInputSta
         onChange={this.handleChange.bind(this)}
         onKeyDown={this.handleSubmit.bind(this)} />
     )
+  }
+
+  private handleSubmit(e: React.KeyboardEvent) {
+    const text = e.target['value'].trim()
+    if (e.keyCode === 13) {
+      this.props.onSave(text)
+      if (this.props.newTodo) {
+        this.setState({ text: '' })
+      }
+    }
+  }
+
+  private handleChange(e: React.FormEvent) {
+    this.setState({ text: e.target['value'] })
+  }
+
+  private handleBlur(e: React.FormEvent) {
+    if (!this.props.newTodo) {
+      this.props.onSave(e.target['value'])
+    }
   }
 }
 

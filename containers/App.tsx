@@ -12,7 +12,7 @@ interface AppProps {
 }
 
 class App extends React.Component<AppProps, void> {
-  render() {
+  render(): JSX.Element {
     const { todos, dispatch } = this.props
     return (
       <div>
@@ -29,11 +29,9 @@ class App extends React.Component<AppProps, void> {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    todos: state.todos
-  }
-}
+const mapStateToProps = state => ({
+  todos: state.todos
+})
 
 export default connect(
   mapStateToProps
