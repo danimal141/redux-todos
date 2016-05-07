@@ -1,8 +1,21 @@
-import React, { Component, PropTypes } from 'react'
-import classnames from 'classnames'
+import * as React from 'react'
+import classnames = require('classnames')
+import { Todo } from '../models/todo'
 import TodoTextInput from './TodoTextInput'
 
-class TodoItem extends Component {
+interface TodoItemProps {
+  todo: Todo
+  editTodo: Function
+  deleteTodo: Function
+  completeTodo: Function
+  key?: any
+}
+
+interface TodoItemState {
+  editing: boolean
+}
+
+class TodoItem extends React.Component<TodoItemProps, TodoItemState> {
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -29,22 +42,25 @@ class TodoItem extends Component {
     let element
     if (this.state.editing) {
       element = (
-        <TodoTextInput text={todo.text}
-                       editing={this.state.editing}
-                       onSave={(text) => this.handleSave(todo.id, text)} />
+        <TodoTextInput
+          text={todo.text}
+          editing={this.state.editing}
+          onSave={(text) => this.handleSave(todo.id, text)} />
       )
     } else {
       element = (
         <div className="view">
-          <input className="toggle"
-                 type="checkbox"
-                 checked={todo.completed}
-                 onChange={() => completeTodo(todo.id)} />
+          <input
+            className="toggle"
+            type="checkbox"
+            checked={todo.completed}
+            onChange={() => completeTodo(todo.id)} />
           <label onDoubleClick={this.handleDoubleClick.bind(this)}>
             {todo.text}
           </label>
-          <button className="destroy"
-                  onClick={() => deleteTodo(todo.id)} />
+          <button
+            className="destroy"
+            onClick={() => deleteTodo(todo.id)} />
         </div>
       )
     }
@@ -58,13 +74,6 @@ class TodoItem extends Component {
       </li>
     )
   }
-}
-
-TodoItem.propTypes = {
-  todo: PropTypes.object.isRequired,
-  editTodo: PropTypes.func.isRequired,
-  deleteTodo: PropTypes.func.isRequired,
-  completeTodo: PropTypes.func.isRequired
 }
 
 export default TodoItem

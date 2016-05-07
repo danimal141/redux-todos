@@ -1,5 +1,5 @@
-import React, { PropTypes, Component } from 'react'
-import classnames from 'classnames'
+import * as React from 'react'
+import classnames = require('classnames')
 import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/TodoFilters'
 
 const FILTER_TITLES = {
@@ -8,7 +8,15 @@ const FILTER_TITLES = {
   [SHOW_COMPLETED]: 'Completed'
 }
 
-class Footer extends Component {
+interface FooterProps {
+  completedCount: number
+  activeCount: number
+  filter: string
+  onClearCompleted: Function
+  onShow: Function
+}
+
+class Footer extends React.Component<FooterProps, void> {
   renderTodoCount() {
     const { activeCount } = this.props
     const itemWord = activeCount === 1 ? 'item' : 'items'
@@ -37,8 +45,9 @@ class Footer extends Component {
     const { completedCount, onClearCompleted } = this.props
     if (completedCount > 0) {
       return (
-        <button className="clear-completed"
-                onClick={onClearCompleted} >
+        <button
+          className="clear-completed"
+          onClick={onClearCompleted} >
           Clear completed
         </button>
       )
@@ -60,14 +69,6 @@ class Footer extends Component {
       </footer>
     )
   }
-}
-
-Footer.propTypes = {
-  completedCount: PropTypes.number.isRequired,
-  activeCount: PropTypes.number.isRequired,
-  filter: PropTypes.string.isRequired,
-  onClearCompleted: PropTypes.func.isRequired,
-  onShow: PropTypes.func.isRequired
 }
 
 export default Footer

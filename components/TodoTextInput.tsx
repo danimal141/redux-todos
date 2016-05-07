@@ -1,10 +1,21 @@
-import React, { Component, PropTypes } from 'react'
-import classnames from 'classnames'
+import * as React from 'react'
+import classnames = require('classnames')
 
-class TodoTextInput extends Component {
+interface TodoTextInputProps {
+  onSave: Function
+  text?: string
+  placeholder?: string
+  editing?: boolean
+  newTodo?: boolean
+}
+
+interface TodoTextInputState {
+  text: string
+}
+
+class TodoTextInput extends React.Component<TodoTextInputProps, TodoTextInputState> {
   constructor(props, context) {
     super(props, context)
-
     this.state = {
       text: this.props.text || ''
     }
@@ -12,7 +23,6 @@ class TodoTextInput extends Component {
 
   handleSubmit(e) {
     const text = e.target.value.trim()
-
     if (e.which === 13) {
       this.props.onSave(text)
       if (this.props.newTodo) {
@@ -47,14 +57,6 @@ class TodoTextInput extends Component {
         onKeyDown={this.handleSubmit.bind(this)} />
     )
   }
-}
-
-TodoTextInput.propTypes = {
-  onSave: PropTypes.func.isRequired,
-  text: PropTypes.string,
-  placeholder: PropTypes.string,
-  editing: PropTypes.bool,
-  newTodo: PropTypes.bool
 }
 
 export default TodoTextInput
