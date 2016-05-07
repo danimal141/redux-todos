@@ -1,6 +1,16 @@
-import { ADD_TODO, DELETE_TODO, EDIT_TODO, COMPLETE_TODO, COMPLETE_ALL, CLEAR_COMPLETED } from '../constants/ActionTypes'
+import objectAssign = require('object-assign')
+import { Todo } from '../models/todo'
+import { Action } from '../models/action'
+import {
+  ADD_TODO,
+  DELETE_TODO,
+  EDIT_TODO,
+  COMPLETE_TODO,
+  COMPLETE_ALL,
+  CLEAR_COMPLETED
+} from '../constants/ActionTypes'
 
-const initialState = [
+const initialState: Todo[] = [
   {
     text: 'Use Redux',
     completed: false,
@@ -8,7 +18,7 @@ const initialState = [
   }
 ]
 
-export default function todos(state = initialState, action) {
+export default function todos(state: Todo[] = initialState, action: Action): Todo[] {
   switch (action.type) {
     case ADD_TODO:
       return [
@@ -19,35 +29,29 @@ export default function todos(state = initialState, action) {
         },
         ...state
       ]
-
     case DELETE_TODO:
       return state.filter(todo =>
         todo.id !== action.id
       )
-
     case EDIT_TODO:
       return state.map(todo =>
         todo.id === action.id ?
-          Object.assign({}, todo, { text: action.text }) :
+          objectAssign({}, todo, { text: action.text }) :
           todo
       )
-
     case COMPLETE_TODO:
       return state.map(todo =>
         todo.id === action.id ?
-          Object.assign({}, todo, { completed: !todo.completed }) :
+          objectAssign({}, todo, { completed: !todo.completed }) :
           todo
       )
-
     case COMPLETE_ALL:
       const areAllMarked = state.every(todo => todo.completed)
-      return state.map(todo => Object.assign({}, todo, {
+      return state.map(todo => objectAssign({}, todo, {
         completed: !areAllMarked
       }))
-
     case CLEAR_COMPLETED:
       return state.filter(todo => todo.completed === false)
-
     default:
       return state
   }

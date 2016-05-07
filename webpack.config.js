@@ -4,7 +4,7 @@ var webpack = require('webpack')
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: [
-    './index.js'
+    './index.tsx'
   ],
   output: {
     path: path.join(__dirname, 'dist'),
@@ -14,11 +14,14 @@ module.exports = {
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin()
   ],
+  resolve: {
+    extensions: ['', '.tsx', '.ts', '.js']
+  },
   module: {
     loaders: [
       {
-        test: /\.js$/,
-        loaders: ['babel'],
+        test: /\.tsx?$/,
+        loaders: ['ts'],
         exclude: /node_modules/,
         include: __dirname
       },
